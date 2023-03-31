@@ -7,7 +7,7 @@ const windowHeight = Dimensions.get('window').height;
 
 function Hero() {
     return (
-        <View>
+        <View style={styles.hero}>
             <ImageBackground
                 source={bg}
                 style={styles.backgroundHeroImage}
@@ -23,9 +23,13 @@ function Hero() {
 }
 
 const styles = StyleSheet.create({
-    backgroundHeroImage: {
+    hero:{
         width: windowWidth,
         height: windowHeight,
+    },
+    backgroundHeroImage: {
+        width: '100%',
+        height: '100%',
         flex: 1,
         resizeMode: 'cover',
         justifyContent: 'center',

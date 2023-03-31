@@ -1,15 +1,17 @@
+import React from 'react'
 import { Text, View, ScrollView, StyleSheet } from "react-native";
 import Hero from '../components/Hero';
 import AuthForm from './AuthForm'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from "@react-navigation/native";
 
 function Index() {
     let state = 'register'
 
     let [token, setToken] = useState('')
 
-    useEffect(() => {
+    useFocusEffect(React.useCallback(() => {
         async function getData() {
             try {
                 const value = await AsyncStorage.getItem('token');
@@ -19,10 +21,10 @@ function Index() {
             }
         }
         getData();
-    }, []);
+    }, [state]));
 
     return (
-        <ScrollView>
+        <ScrollView style={{height: '200%'}}>
             <Hero />
             {token ? '' : <AuthForm state={state} />}
         </ScrollView>

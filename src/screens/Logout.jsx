@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import bottomTabsActions from '../store/ReloadBottomTabs/actions';
-import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 
 const { reloadBottomTabs } = bottomTabsActions
