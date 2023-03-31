@@ -2,56 +2,70 @@ import React, { useState } from 'react'
 import { Text, View, StyleSheet, TextInput, Image, ScrollView } from "react-native";
 import axios from 'axios'
 import GoBackHome from './GoBackHome';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import bottomTabsActions from '../store/ReloadBottomTabs/actions';
 
-function RegisterForm({setRender}) {
-    const [name, setName] = useState('');
+const { reloadBottomTabs } = bottomTabsActions
+
+function LoginForm({ setRender }) {
     const [email, setEmail] = useState('');
-    const [photo, setPhoto] = useState('');
     const [password, setPassword] = useState('');
+    const navigation = useNavigation()
 
-    async function handleSignUp() {
+    let state = useSelector(store => store)
+    let dispatch = useDispatch()
+
+    async function handleSignIn() {
         let data = {
-            name: name,
             mail: email,
-            photo: photo,
             password: password
         }
-        console.log(data);
-        let url = 'https://minga-pjxq.onrender.com/api/auth/signup'
+        let url = 'https://minga-pjxq.onrender.com/api/auth/signin'
+        let admin
+        let author
         try {
-            await axios.post(url, data)
-            console.log('Register Successful')
+            await axios.post(url, data).then(res => {
+                res.data.user.is_admin ? (admin = true) : (admin = false)
+                res.data.user.is_author ? (author = true) : (author = false)
+                AsyncStorage.setItem('token', res.data.token)
+                AsyncStorage.setItem('user', JSON.stringify({
+                    id: res.data.user._id,
+                    name: res.data.user.name,
+                    mail: res.data.user.mail,
+                    photo: res.data.user.photo,
+                    admin,
+                    author
+                }))
+                dispatch(reloadBottomTabs({ state: !state }))
+                setTimeout(() => navigation.navigate('Home'), 1000)
+            })
+            console.log('Login Successful')
         } catch (error) {
-            console.log('ERROR'+error)
+            console.log('ERROR' + error)
         }
     }
 
     return (
-        <ScrollView style={styles.register}>
-            <View style={styles.registerContent}>
+        <ScrollView style={styles.login}>
+            <View style={styles.loginContent}>
                 <View style={styles.welcomeSection}>
-                    <Text style={styles.welcomeSectionH2}>Welcome!</Text>
+                    <Text style={styles.welcomeSectionH2}>Welcome <Text style={styles.link}>back</Text>!</Text>
                     <Text style={styles.welcomeSectionP}>Discover manga, manhua and manhwa, track your progress, have fun, read manga.</Text>
                 </View>
                 <View style={styles.form}>
                     <View style={styles.fieldset}>
-                        <Text style={styles.legend}>Name</Text>
-                        <TextInput name="name" id="name" style={styles.input} onChangeText={inputText => setName(inputText)} />
-                    </View>
-                    <View style={styles.fieldset}>
                         <Text style={styles.legend}>Email</Text>
                         <TextInput name="mail" id="mail" style={styles.input} onChangeText={inputText => setEmail(inputText)} />
-                    </View>
-                    <View style={styles.fieldset}>
-                        <Text style={styles.legend}>Photo</Text>
-                        <TextInput name="photo" id="photo" style={styles.input} onChangeText={inputText => setPhoto(inputText)} />
                     </View>
                     <View style={styles.fieldset} id='field-password'>
                         <Text style={styles.legend}>Password</Text>
                         <TextInput secureTextEntry={true} name="password" id="password" style={styles.input} onChangeText={inputText => setPassword(inputText)} />
                     </View>
                     {/* DAR FUNCIONALIDAD PARA EL SIGN UP */}
-                    <View style={styles.sign}><Text onPress={handleSignUp} style={styles.signText} >Sign up</Text ></View>
+                    <View style={styles.sign}><Text onPress={handleSignIn} style={styles.signText} >Sign In</Text ></View>
                     {/* <GoogleLogin
                         className="google"
                         image="./google.png"
@@ -61,20 +75,19 @@ function RegisterForm({setRender}) {
                         onFailure={onFailure}
                         cookiePolicy={"sigle_host_policy"}
                     /> */}
-                    <Text style={styles.loginText}>Already have an account? <Text style={styles.link} onPress={() => {setRender('login')}}>Log in</Text></Text>
-                    <GoBackHome/>
+                    <Text style={styles.loginText}>You don´t have an account yet? <Text style={styles.link} onPress={() => { setRender('register') }}>Sign up</Text></Text>
+                    <GoBackHome />
                 </View>
             </View>
         </ScrollView>
-
     )
 }
 
 const styles = StyleSheet.create({
-    register: {
+    login: {
         width: '100%',
     },
-    registerContent: {
+    loginContent: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -88,7 +101,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         gap: 11,
-        width: '100%'
+        width: '100%',
     },
     welcomeSectionH2: {
         textAlign: 'center',
@@ -170,4 +183,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RegisterForm
+export default LoginForm
