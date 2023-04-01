@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput, Image, ScrollView } from "react-native";
+import { Text, View, StyleSheet, TextInput, Image, ScrollView, Dimensions } from "react-native";
 import axios from 'axios'
 import GoBackHome from './GoBackHome';
 import { useNavigation } from '@react-navigation/native';
@@ -10,12 +10,16 @@ import bottomTabsActions from '../store/ReloadBottomTabs/actions';
 
 const { reloadBottomTabs } = bottomTabsActions
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 function LoginForm({ setRender }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation()
 
-    let state = useSelector(store => store)
+    let state = useSelector(store => store.bottomTabsReducer.state)
+
     let dispatch = useDispatch()
 
     async function handleSignIn() {
@@ -85,7 +89,9 @@ function LoginForm({ setRender }) {
 
 const styles = StyleSheet.create({
     login: {
-        width: '100%',
+        width: windowWidth,
+        height: windowHeight,
+        paddingTop: '25%'
     },
     loginContent: {
         display: 'flex',

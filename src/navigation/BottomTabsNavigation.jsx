@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Logout from "../screens/Logout";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from 'react-redux';
+import Mangas from '../screens/Mangas';
 
 const Tab = createBottomTabNavigator()
 
@@ -25,19 +26,20 @@ function BottomTabsNavigation() {
             }
         }
         getData();
-      }, [state]));
+    }, [state]));
 
     return (
         <Tab.Navigator>
-            <Tab.Screen name='Home' component={Index} initialParams={{ state: 'register' }} />
+            <Tab.Screen name='Home' options={{ headerShown: false }} component={Index} initialParams={{ state: 'register' }} />
             {token ? <></>
                 :
                 <>
-                    <Tab.Screen name='Register' component={AuthForm} initialParams={{ state: 'register' }} />
-                    <Tab.Screen name='Login' component={AuthForm} initialParams={{ state: 'login' }} />
+                    <Tab.Screen name='Register' options={{ headerShown: false }} component={AuthForm} initialParams={{ state: 'register' }} />
+                    <Tab.Screen name='Login' options={{ headerShown: false }} component={AuthForm} initialParams={{ state: 'login' }} />
                 </>
             }
-            { token ? <Tab.Screen name='Logout' component={Logout} /> : <></> }
+            {token ? <Tab.Screen options={{ headerShown: false }} name='Mangas' component={Mangas} /> : <></>}
+            {token ? <Tab.Screen options={{ headerShown: false }} name='Logout' component={Logout} /> : <></>}
         </Tab.Navigator>
     )
 }

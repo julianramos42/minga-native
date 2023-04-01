@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput, Image, ScrollView } from "react-native";
+import { Text, View, StyleSheet, TextInput, Image, ScrollView, Dimensions } from "react-native";
 import axios from 'axios'
 import GoBackHome from './GoBackHome';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 function RegisterForm({setRender}) {
     const [name, setName] = useState('');
@@ -16,11 +19,12 @@ function RegisterForm({setRender}) {
             photo: photo,
             password: password
         }
-        console.log(data);
+
         let url = 'https://minga-pjxq.onrender.com/api/auth/signup'
         try {
             await axios.post(url, data)
             console.log('Register Successful')
+            setTimeout(() => navigation.navigate('Login'), 1000)
         } catch (error) {
             console.log('ERROR'+error)
         }
@@ -72,7 +76,9 @@ function RegisterForm({setRender}) {
 
 const styles = StyleSheet.create({
     register: {
-        width: '100%',
+        width: windowWidth,
+        height: windowHeight,
+        paddingTop: '10%'
     },
     registerContent: {
         display: 'flex',
