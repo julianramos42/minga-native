@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     padding: 10,
     width: '100%',
-    height: windowHeight,
+    minHeight: windowHeight,
     backgroundColor: '#FFFFFF',
     borderRadius: 16,
   }

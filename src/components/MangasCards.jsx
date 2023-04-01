@@ -17,12 +17,15 @@ function MangasCards() {
     let text = useSelector(store => store.text.text) // TEXTO DEL BUSCADOR
     let categories = useSelector(store => store.categories.categories)
     let order = useSelector(store => store.order.order)
+    let [page,setPage] = useState(1)
     const dispatch = useDispatch()
+    let [token,setToken] = useState('')
 
     useFocusEffect(React.useCallback(() => {
         async function getData() {
             try {
                 const value = await AsyncStorage.getItem('token');
+                setToken(value)
                 getMangas(value)
             } catch (error) {
                 console.log(error);
@@ -30,17 +33,17 @@ function MangasCards() {
         }
         getData();
     }, []));
-    
-    useEffect(() => {
-            getMangas()
-    }, [text, categories, order])
 
-    function getMangas(token){
+    useEffect(() => {
+        getMangas(token)
+    }, [page, text, categories, order])
+
+    function getMangas(token) {
         let headers = { headers: { 'Authorization': `Bearer ${token}` } }
-        dispatch(read_mangas({ inputText: text, categories: categories, order: order, headers }))
+        dispatch(read_mangas({ page: page, inputText: text, categories: categories, order: order, headers }))
     }
 
-    function handleRead(e,id){
+    function handleRead(e, id) {
         console.log(id)
     }
 
@@ -69,6 +72,20 @@ function MangasCards() {
                     return card
                 }) : <Text>No mangas founded</Text>
             }
+            <View style={styles.pageBtns}>
+                {
+                    page === 1 ? <></> :
+                        <TouchableOpacity style={styles.btns} onPress={() => {setPage(page-1)}}>
+                            <Text style={styles.btnsText}>Prev</Text>
+                        </TouchableOpacity>
+                }
+                {
+                    mangas.length == 6 || mangas.length == 10 ?
+                        <TouchableOpacity style={styles.btns} onPress={() => {setPage(page+1)}}>
+                            <Text style={styles.btnsText}>Next</Text>
+                        </TouchableOpacity> : <></>
+                }
+            </View>
         </View>
     )
 }
@@ -162,6 +179,26 @@ const styles = StyleSheet.create({
         width: 125,
         height: 148,
         borderRadius: 10
+    },
+    pageBtns: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 30,
+    },
+    btns: {
+        width: 80,
+        height: 30,
+        borderRadius: 50000,
+        backgroundColor: '#F9A8D4',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    btnsText: {
+        fontWeight: '700',
+        fontSize: 14,
+        color: '#EBEBEB',
+        textDecorationLine: 'none',
     }
 })
 
