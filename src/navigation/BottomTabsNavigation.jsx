@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux';
 import Mangas from '../screens/Mangas';
 import MangaDetails from '../screens/MangaDetails';
 import Chapter from '../screens/Chapter';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Tab = createBottomTabNavigator()
 
@@ -31,21 +33,49 @@ function BottomTabsNavigation() {
         }
         getData();
     }, [state, mangaClicked, chapterClicked]));
-    
+
     return (
         <Tab.Navigator>
-            <Tab.Screen name='Home' options={{ headerShown: false }} component={Index} initialParams={{ state: 'register' }} />
+            <Tab.Screen name='Home' options={{
+                headerShown: false, tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="home-outline" color={color} size={size} />
+                ),
+            }} component={Index} initialParams={{ state: 'register' }} />
             {token ? <></>
                 :
                 <>
-                    <Tab.Screen name='Register' options={{ headerShown: false }} component={AuthForm} initialParams={{ state: 'register' }} />
-                    <Tab.Screen name='Login' options={{ headerShown: false }} component={AuthForm} initialParams={{ state: 'login' }} />
+                    <Tab.Screen name='Register' options={{
+                        headerShown: false, tabBarIcon: ({ color, size }) => (
+                            <FontAwesome5 name="user-circle" color={color} size={size} />
+                        ),
+                    }} component={AuthForm} initialParams={{ state: 'register' }} />
+                    <Tab.Screen name='Login' options={{
+                        headerShown: false, tabBarIcon: ({ color, size }) => (
+                            <FontAwesome5 name="user-circle" color={color} size={size} />
+                        ),
+                    }} component={AuthForm} initialParams={{ state: 'login' }} />
                 </>
             }
-            {token ? <Tab.Screen options={{ headerShown: false }} name='Mangas' component={Mangas} /> : <></>}
-            {token && mangaClicked ? <Tab.Screen options={{ headerShown: false }} name='Details' component={MangaDetails} /> : <></>}
-            {token && chapterClicked ? <Tab.Screen options={{ headerShown: false }} name='Chapter' component={Chapter} /> : <></>}
-            {token ? <Tab.Screen options={{ headerShown: false }} name='Logout' component={Logout} /> : <></>}
+            {token ? <Tab.Screen options={{
+                headerShown: false, tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="book-outline" color={color} size={size} />
+                ),
+            }} name='Mangas' component={Mangas} /> : <></>}
+            {token && mangaClicked ? <Tab.Screen options={{
+                headerShown: false, tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="book-outline" color={color} size={size} />
+                ),
+            }} name='Details' component={MangaDetails} /> : <></>}
+            {token && chapterClicked ? <Tab.Screen options={{
+                headerShown: false, tabBarIcon: ({ color, size }) => (
+                    <Ionicons name="book-outline" color={color} size={size} />
+                ),
+            }} name='Chapter' component={Chapter} /> : <></>}
+            {token ? <Tab.Screen options={{
+                headerShown: false, tabBarIcon: ({ color, size }) => (
+                    <FontAwesome5 name="user-circle" color={color} size={size} />
+                ),
+            }} name='Logout' component={Logout} /> : <></>}
         </Tab.Navigator>
     )
 }
