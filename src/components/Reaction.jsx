@@ -15,7 +15,6 @@ import { useEffect } from 'react'
 import { useRoute } from '@react-navigation/native'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ScrollView } from 'react-native'
 
 function Reaction() {
     const route = useRoute();
@@ -30,7 +29,7 @@ function Reaction() {
     let [surprise, setSurprise] = useState('null')
     let [love, setLove] = useState('null')
     let headers = { headers: { 'Authorization': `Bearer ${token}` } }
-    
+
     useFocusEffect(React.useCallback(() => {
         setLike('null')
         setDislike('null')
@@ -164,7 +163,10 @@ function Reaction() {
         if (token && mangaId) {
             getUserReactions(token,mangaId)
         }
-    }, [reload, mangaId, token])
+        if(token && reactions){
+            userReactions(reactions)
+        }
+    }, [reload, mangaId, token, reactions])
 
     return (
         <View style={{ height: 100 }}>
