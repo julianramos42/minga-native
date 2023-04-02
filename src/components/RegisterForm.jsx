@@ -3,11 +3,13 @@ import { Text, View, StyleSheet, TextInput, Image, ScrollView, Dimensions, Touch
 import axios from 'axios'
 import GoBackHome from './GoBackHome';
 import { useNavigation } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function RegisterForm({setRender}) {
+    const [loading, setLoading] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [photo, setPhoto] = useState('');
@@ -15,6 +17,8 @@ function RegisterForm({setRender}) {
 
     const navigation = useNavigation()
     async function handleSignUp() {
+        setLoading(true)
+
         let data = {
             name: name,
             mail: email,
@@ -25,10 +29,12 @@ function RegisterForm({setRender}) {
         let url = 'https://minga-pjxq.onrender.com/api/auth/signup'
         try {
             await axios.post(url, data)
+            setLoading(false)
             alert('Register Successful, please checkout your email and verify your account');
             console.log('Register Successful')
             setTimeout(() => navigation.navigate('Login'), 4000)
         } catch (error) {
+            setLoading(false)
             console.log(error)
         }
     }
@@ -72,6 +78,7 @@ function RegisterForm({setRender}) {
                     <GoBackHome/>
                 </View>
             </View>
+            <Spinner visible={loading} />
         </ScrollView>
 
     )

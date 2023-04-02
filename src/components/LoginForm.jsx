@@ -60,6 +60,7 @@ function LoginForm({ setRender }) {
             })
             console.log('Login Successful')
         } catch (error) {
+            setLoading(false)
             console.log('ERROR' + error)
         }
     }

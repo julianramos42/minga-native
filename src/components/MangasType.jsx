@@ -33,7 +33,9 @@ function MangasType() {
                 } else {
                     categoriesCheck = categoriesCheck.filter(e => e !== category._id)
                 }
-                dispatch(captureCheck({ categories: categoriesCheck.join() }))
+                setTimeout( () => {
+                    dispatch(captureCheck({ categories: categoriesCheck.join() }))
+                }, 500)
             }
         })
     }

@@ -18,6 +18,7 @@ const { mangaClicked } = mangaClickActions
 function MangasCards() {
     let mangas = useSelector(store => store.mangas.mangas)
     let text = useSelector(store => store.text.text) // TEXTO DEL BUSCADOR
+    let [text1,setText1] = useState(useSelector(store => store.text.text))
     let categories = useSelector(store => store.categories.categories)
     let order = useSelector(store => store.order.order)
     let [page,setPage] = useState(1)
@@ -29,18 +30,13 @@ function MangasCards() {
             try {
                 const value = await AsyncStorage.getItem('token');
                 setToken(value)
-                getMangas(value)
             } catch (error) {
                 console.log(error);
             }
         }
         getData();
     }, []));
-
-    useEffect(() => {
-        getMangas(token)
-    }, [page, text, categories, order])
-
+    
     function getMangas(token) {
         let headers = { headers: { 'Authorization': `Bearer ${token}` } }
         dispatch(read_mangas({ page: page, inputText: text, categories: categories, order: order, headers }))
@@ -53,6 +49,11 @@ function MangasCards() {
             navigation.navigate('Details',{mangaId: id});
         }, 100)
     }
+
+    useEffect( () => {
+        setText1(text)
+        getMangas(token)
+    }, [page, text, categories, order, token]);
 
     return (
         <View style={styles.mangasCards}>
