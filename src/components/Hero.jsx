@@ -1,15 +1,35 @@
 import React from 'react'
 import { Text, View, StyleSheet, Dimensions, Image, ScrollView, ImageBackground,TouchableOpacity } from "react-native";
 import bg from '../../images/hero-background.png'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function Hero() {
+    let [token, setToken] = useState('')
+
+    useFocusEffect(React.useCallback(() => {
+        async function getToken() {
+            try {
+                const value = await AsyncStorage.getItem('token');
+                setToken(value)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getToken();
+    }, []));
+
     const navigation = useNavigation()
     function navigateMangas(){
-        navigation.navigate('Mangas');
+        if(token){
+            navigation.navigate('Mangas');
+        }else{
+            navigation.navigate('Register');
+        }
     }
 
     return (

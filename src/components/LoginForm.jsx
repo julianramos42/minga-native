@@ -7,13 +7,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import bottomTabsActions from '../store/ReloadBottomTabs/actions';
+import mangaClickActions from '../store/MangaClicked/actions';
+import chapterClickActions from '../store/ChapterClicked/actions';
+import { TouchableOpacity } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const { reloadBottomTabs } = bottomTabsActions
+const { mangaClicked } = mangaClickActions
+const { chapterClicked } = chapterClickActions
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function LoginForm({ setRender }) {
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation()
@@ -23,6 +30,8 @@ function LoginForm({ setRender }) {
     let dispatch = useDispatch()
 
     async function handleSignIn() {
+        setLoading(true)
+
         let data = {
             mail: email,
             password: password
@@ -44,6 +53,9 @@ function LoginForm({ setRender }) {
                     author
                 }))
                 dispatch(reloadBottomTabs({ state: !state }))
+                dispatch(mangaClicked({ state: false }))
+                dispatch(chapterClicked({ state: false }))
+                setLoading(false)
                 setTimeout(() => navigation.navigate('Home'), 1000)
             })
             console.log('Login Successful')
@@ -69,7 +81,7 @@ function LoginForm({ setRender }) {
                         <TextInput secureTextEntry={true} name="password" id="password" style={styles.input} onChangeText={inputText => setPassword(inputText)} />
                     </View>
                     {/* DAR FUNCIONALIDAD PARA EL SIGN UP */}
-                    <View style={styles.sign}><Text onPress={handleSignIn} style={styles.signText} >Sign In</Text ></View>
+                    <TouchableOpacity style={styles.sign} onPress={handleSignIn}><Text style={styles.signText} >Sign In</Text ></TouchableOpacity>
                     {/* <GoogleLogin
                         className="google"
                         image="./google.png"
@@ -83,6 +95,7 @@ function LoginForm({ setRender }) {
                     <GoBackHome />
                 </View>
             </View>
+            <Spinner visible={loading} />
         </ScrollView>
     )
 }

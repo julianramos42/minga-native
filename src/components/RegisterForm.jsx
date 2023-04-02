@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput, Image, ScrollView, Dimensions } from "react-native";
+import { Text, View, StyleSheet, TextInput, Image, ScrollView, Dimensions, TouchableOpacity } from "react-native";
 import axios from 'axios'
 import GoBackHome from './GoBackHome';
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -12,6 +13,7 @@ function RegisterForm({setRender}) {
     const [photo, setPhoto] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigation = useNavigation()
     async function handleSignUp() {
         let data = {
             name: name,
@@ -23,10 +25,11 @@ function RegisterForm({setRender}) {
         let url = 'https://minga-pjxq.onrender.com/api/auth/signup'
         try {
             await axios.post(url, data)
+            alert('Register Successful, please checkout your email and verify your account');
             console.log('Register Successful')
-            setTimeout(() => navigation.navigate('Login'), 1000)
+            setTimeout(() => navigation.navigate('Login'), 4000)
         } catch (error) {
-            console.log('ERROR'+error)
+            console.log(error)
         }
     }
 
@@ -55,7 +58,7 @@ function RegisterForm({setRender}) {
                         <TextInput secureTextEntry={true} name="password" id="password" style={styles.input} onChangeText={inputText => setPassword(inputText)} />
                     </View>
                     {/* DAR FUNCIONALIDAD PARA EL SIGN UP */}
-                    <View style={styles.sign}><Text onPress={handleSignUp} style={styles.signText} >Sign up</Text ></View>
+                    <TouchableOpacity style={styles.sign} onPress={handleSignUp}><Text style={styles.signText} >Sign up</Text ></TouchableOpacity>
                     {/* <GoogleLogin
                         className="google"
                         image="./google.png"

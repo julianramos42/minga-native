@@ -30,8 +30,8 @@ function BottomTabsNavigation() {
             }
         }
         getData();
-    }, [state]));
-
+    }, [state, mangaClicked, chapterClicked]));
+    
     return (
         <Tab.Navigator>
             <Tab.Screen name='Home' options={{ headerShown: false }} component={Index} initialParams={{ state: 'register' }} />
