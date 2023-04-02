@@ -55,7 +55,7 @@ function Reaction() {
             let headers = { headers: { 'Authorization': `Bearer ${token}` } }
             setTimeout(() => {
                 dispatch(captureReactions({ mangaId, headers }))
-            }, 500)
+            }, 1500)
         }
         getReactions()
     }, [token,reload,mangaId]));
@@ -80,7 +80,7 @@ function Reaction() {
         if (dislike === 'dislike') {
             setTimeout( () => {
                 setDislike('null')
-            }, 1500)
+            }, 500)
         }
         let url = 'https://minga-pjxq.onrender.com/api/reactions'
         let data = {
@@ -161,13 +161,10 @@ function Reaction() {
     }
 
     useEffect(() => {
-        if (token) {
-            if(mangaId){
-                getUserReactions(token,mangaId)
-            }
-            userReactions(reactions)
+        if (token && mangaId) {
+            getUserReactions(token,mangaId)
         }
-    }, [reload, mangaId])
+    }, [reload, mangaId, token])
 
     return (
         <View style={{ height: 100 }}>
