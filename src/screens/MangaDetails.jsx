@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import Reaction from '../components/Reaction';
+import ChapterRead from '../components/ChapterRead';
 
 const { read_manga } = actions
 
@@ -39,8 +40,8 @@ function MangaDetails() {
     }
 
     return (
-        <ScrollView style={{height: '200%'}}>
-            <ScrollView style={styles.section1} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', height: windowHeight }}>
+        <ScrollView style={{minHeight: windowHeight}}>
+            <ScrollView contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', paddingBottom: 30, paddingTop: 10 }}>
                 <Image source={{ uri: manga.cover_photo }} style={styles.imgPartOne} alt={manga.title} />
                 <Text style={styles.section1Text}>{manga.title}</Text>
                 <View style={styles.section2}>
@@ -48,19 +49,13 @@ function MangaDetails() {
                     <Text style={styles.companyName}>{manga.author_id?.name}</Text>
                 </View>
                 <Reaction/>
+                <ChapterRead/>
             </ScrollView>
-            <Text>{mangaId}</Text>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    section1: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: windowHeight
-    },
     imgPartOne: {
         width: '60%',
         height: 300,

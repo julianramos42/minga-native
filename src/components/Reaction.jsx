@@ -235,14 +235,13 @@ const styles = StyleSheet.create({
         height: 45,
     },
     section4: {
-        marginTop: '5%',
+        marginTop: '7%',
         height: 45,
     },
     rectangleManga: {
         width: '100%',
         height: 40,
-        marginTop: '5%',
-        marginBottom: '5%',
+        marginTop: '7%',
         backgroundColor: '#FFFFFF',
         borderRadius: 20,
         display: 'flex',
