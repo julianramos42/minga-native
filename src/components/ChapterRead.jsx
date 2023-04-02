@@ -66,7 +66,7 @@ function ChapterRead() {
     function handleRead(e,id){
         dispatch(chapterClicked({state: true}))
         setTimeout( () => {
-            navigation.navigate('Chapter',{chapterId: id});
+            navigation.navigate('Chapter',{chapterId: id, mangaId: mangaId});
         }, 100)
     }
 

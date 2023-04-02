@@ -1,10 +1,7 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
-import { useRoute } from '@react-navigation/native'
-import { useFocusEffect } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { TouchableOpacity } from 'react-native'
 import { StyleSheet } from 'react-native'
 import axios from 'axios';
@@ -13,6 +10,7 @@ import flecha from '../../images/flecha-correcta.png'
 import flecha_izquierda from '../../images/flecha-izquierda.png'
 import { ScrollView } from 'react-native';
 import { Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -20,26 +18,48 @@ const windowHeight = Dimensions.get('window').height;
 function Chapter() {
   const route = useRoute();
   const chapterId = route.params.chapterId;
+  const mangaId = route.params.mangaId;
   const [chapter, setChapter] = useState({});
   const [page, setPage] = useState(0)
 
-  useEffect(() => {
-    axios
-      .get('https://minga-pjxq.onrender.com/api/chapters/' + chapterId)
-      .then((response) => {
-        setChapter(response.data.chapter)
-      })
+  useFocusEffect(React.useCallback(() => {
+    async function getChapter() {
+        try {
+          await axios.get('https://minga-pjxq.onrender.com/api/chapters/' + chapterId)
+          .then((response) => {
+            setChapter(response.data.chapter)
+          })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getChapter();
+}, [chapterId]));
 
-      .catch((error) => console.error(error));
-  }, [chapterId]);
-
+  const navigation = useNavigation()
   let handlePrev = () => {
-    // setPage(page - 1);
+    if(page === 0){
+      setTimeout( () => {
+        navigation.navigate('Details',{mangaId: mangaId});
+      }, 100)
+    }else{
+      setPage(page - 1);
+    } 
   };
 
   let handleNext = () => {
-    // setPage(page + 1);
+    if(page === chapter.pages.length){
+      setTimeout( () => {
+        navigation.navigate('Details',{mangaId: mangaId});
+      }, 100)
+    }else{
+      setPage(page + 1);
+    }
   };
+
+  function handlePage0(){
+    setPage(0)
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.mover}>
@@ -65,6 +85,10 @@ function Chapter() {
         <View style={styles.chapter3}>
           <Image style={styles.comment} source={comment} />
           <Text>9</Text>
+          <Text>Page: {page}/{chapter?.pages?.length}</Text>
+          <TouchableOpacity style={styles.Page0Btn} onPress={handlePage0}>
+            <Text style={styles.Page0Text}>Go to page 0</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -117,7 +141,7 @@ const styles = StyleSheet.create({
   },
   divChapter3: {
     background: '#dbd9d9',
-    height: 50,
+    height: 70,
   },
   chapter3: {
     display: 'flex',
@@ -151,6 +175,23 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  Page0Btn: {
+    width: 90,
+    height: 30,
+    backgroundColor: '#F9A8D4',
+    borderRadius: 40,
+    borderWidth: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontWeight: '700',
+    fontSize: 14,
+    lineHeight: 17,
+    padding: 5,
+},
+Page0Text: {
+    color: '#FFFFFF'
+},
 });
 
 export default Chapter
