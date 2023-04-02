@@ -9,8 +9,11 @@ import { useFocusEffect } from '@react-navigation/native'
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native'
 import { useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native';
+import mangaClickActions from '../store/MangaClicked/actions'
 
 const { read_mangas } = mangasActions
+const { mangaClicked } = mangaClickActions
 
 function MangasCards() {
     let mangas = useSelector(store => store.mangas.mangas)
@@ -43,8 +46,12 @@ function MangasCards() {
         dispatch(read_mangas({ page: page, inputText: text, categories: categories, order: order, headers }))
     }
 
+    const navigation = useNavigation()
     function handleRead(e, id) {
-        console.log(id)
+        dispatch(mangaClicked({state: true}))
+        setTimeout( () => {
+            navigation.navigate('Details',{mangaId: id});
+        }, 100)
     }
 
     return (

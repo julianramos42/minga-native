@@ -12,15 +12,14 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function Mangas() {
-  let search = useSelector(store => store.text)
 
   return (
     <ScrollView style={styles.mangas}>
       <MangasTitle />
       <ScrollView style={styles.mangasDisplayed}>
-        <Text style={{marginBottom: 12, fontWeight: 'bold'}}>Explore</Text>
-        <MangasType/>
-        <MangasCards/>
+        <Text style={{ marginBottom: 12, fontWeight: 'bold' }}>Explore</Text>
+        <MangasType />
+        <MangasCards />
       </ScrollView>
     </ScrollView>
   )

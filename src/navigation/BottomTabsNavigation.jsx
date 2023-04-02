@@ -8,13 +8,17 @@ import Logout from "../screens/Logout";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from 'react-redux';
 import Mangas from '../screens/Mangas';
+import MangaDetails from '../screens/MangaDetails';
+import Chapter from '../screens/Chapter';
 
 const Tab = createBottomTabNavigator()
 
 function BottomTabsNavigation() {
     let [token, setToken] = useState('')
 
-    let state = useSelector(store => store)
+    let state = useSelector(store => store.bottomTabsReducer.state)
+    let mangaClicked = useSelector(store => store.mangaClickReducer.state)
+    let chapterClicked = useSelector(store => store.chapterClickReducer.state)
 
     useFocusEffect(React.useCallback(() => {
         async function getData() {
@@ -39,6 +43,8 @@ function BottomTabsNavigation() {
                 </>
             }
             {token ? <Tab.Screen options={{ headerShown: false }} name='Mangas' component={Mangas} /> : <></>}
+            {token && mangaClicked ? <Tab.Screen options={{ headerShown: false }} name='Details' component={MangaDetails} /> : <></>}
+            {token && chapterClicked ? <Tab.Screen options={{ headerShown: false }} name='Chapter' component={Chapter} /> : <></>}
             {token ? <Tab.Screen options={{ headerShown: false }} name='Logout' component={Logout} /> : <></>}
         </Tab.Navigator>
     )

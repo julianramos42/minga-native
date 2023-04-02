@@ -14,7 +14,7 @@ import sortReducer from './Sort/reducer'
 // import modalDeleteReducer from './RenderDeleteModal/reducer'
 // import renderCommentsModal from './RenderCommentsModal/reducer'
 // import getComents from './Comments/reducer'
-// import reactionsReducer from './Reactions/reducer'
+import reactionsReducer from './Reactions/reducer'
 // import favouritesMangasReducer from './FavouritesMangas/reducer'
 // import authorReducer from './Profile/reducer'
 // import logoutReducer from './LogoutReload/reducer'
@@ -22,6 +22,8 @@ import sortReducer from './Sort/reducer'
 // import panelAdminReducer from './PanelAdmin/reducer'
 // import verifyReducer from "./User/reducer";
 import bottomTabsReducer from './ReloadBottomTabs/reducer'
+import mangaClickReducer from './MangaClicked/reducer'
+import chapterClickReducer from './ChapterClicked/reducer'
 
 export const store = configureStore({
     reducer: {
@@ -40,13 +42,15 @@ export const store = configureStore({
         // comments: getComents,
         // modalState: modalReducer,
         // modalDeleteState: modalDeleteReducer,
-        // reactions: reactionsReducer,
+        reactions: reactionsReducer,
         // author: authorReducer,
         // favouritesMangas: favouritesMangasReducer,
         // logoutState: logoutReducer,
         // checkout: checkoutMPReducer,
         // panelAdmin : panelAdminReducer,
         // user: verifyReducer,
-        bottomTabsReducer: bottomTabsReducer
+        bottomTabsReducer: bottomTabsReducer,
+        mangaClickReducer: mangaClickReducer,
+        chapterClickReducer: chapterClickReducer
     }
 })

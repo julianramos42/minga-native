@@ -1,11 +1,17 @@
 import React from 'react'
-import { Text, View, StyleSheet, Dimensions, Image, ScrollView, ImageBackground } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Image, ScrollView, ImageBackground,TouchableOpacity } from "react-native";
 import bg from '../../images/hero-background.png'
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function Hero() {
+    const navigation = useNavigation()
+    function navigateMangas(){
+        navigation.navigate('Mangas');
+    }
+
     return (
         <View style={styles.hero}>
             <ImageBackground
@@ -15,8 +21,8 @@ function Hero() {
                 <View style={styles.exploreSection}>
                     <Text style={styles.exploreTitle}>Live the emotion of the manga</Text>
                     <Text style={{color: '#FFF'}}>Find the perfect manga for you</Text>
-                    <View style={styles.exploreBtn}><Text style={styles.textBtn}>Explore</Text></View>
-                </View>
+                    <TouchableOpacity onPress={navigateMangas} style={styles.exploreBtn}><Text style={styles.textBtn}>Explore</Text></TouchableOpacity>
+                </View> 
             </ImageBackground>
         </View>
     )
