@@ -23,6 +23,7 @@ import reactionsReducer from './Reactions/reducer'
 // import verifyReducer from "./User/reducer";
 import bottomTabsReducer from './ReloadBottomTabs/reducer'
 import mangaClickReducer from './MangaClicked/reducer'
+import chapterClickReducer from './ChapterClicked/reducer'
 
 export const store = configureStore({
     reducer: {
@@ -49,6 +50,7 @@ export const store = configureStore({
         // panelAdmin : panelAdminReducer,
         // user: verifyReducer,
         bottomTabsReducer: bottomTabsReducer,
-        mangaClickReducer: mangaClickReducer
+        mangaClickReducer: mangaClickReducer,
+        chapterClickReducer: chapterClickReducer
     }
 })

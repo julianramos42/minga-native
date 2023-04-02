@@ -10,8 +10,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native'
 import { Image } from 'react-native'
 import IconComent from '../../images/iconcomment.png'
+import chapterClickActions from '../store/ChapterClicked/actions'
+import { useNavigation } from '@react-navigation/native';
 
 const { read_chapters } = chapterActions
+const { chapterClicked } = chapterClickActions
 
 function ChapterRead() {
     const route = useRoute();
@@ -59,6 +62,14 @@ function ChapterRead() {
         }
     }, [page])
 
+    const navigation = useNavigation()
+    function handleRead(e,id){
+        dispatch(chapterClicked({state: true}))
+        setTimeout( () => {
+            navigation.navigate('Chapter',{chapterId: id});
+        }, 100)
+    }
+
     return (
         <>
             <View style={styles.detailsBtns}>
@@ -91,7 +102,7 @@ function ChapterRead() {
                                                 <Text>169</Text>
                                             </View>
                                         </View>
-                                        <TouchableOpacity style={styles.btnRead}><Text style={styles.btnReadText}>Read</Text></TouchableOpacity>
+                                        <TouchableOpacity style={styles.btnRead} onPress={(event) => handleRead(event, chapter._id)}><Text style={styles.btnReadText}>Read</Text></TouchableOpacity>
                                     </View>
                                 )
                             })

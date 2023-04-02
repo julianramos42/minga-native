@@ -50,7 +50,7 @@ function MangasCards() {
     function handleRead(e, id) {
         dispatch(mangaClicked({state: true}))
         setTimeout( () => {
-            navigation.navigate('MangaDetails',{mangaId: id});
+            navigation.navigate('Details',{mangaId: id});
         }, 100)
     }
 
